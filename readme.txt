@@ -1,0 +1,1 @@
+This is the correct readme, not the .md file, ignore that one, i'll remove it later

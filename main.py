@@ -1,3 +1,6 @@
+from pymongo import MongoClient
+import json
+
 def articles():
     print("Please enter in keywords for articles using spaces only")
     uI = input("> ").lower().split()

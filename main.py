@@ -1,4 +1,17 @@
+from pymongo import MongoClient
+import json
 from math import floor
+
+
+def init_db():
+    client = MongoClient("mongodb://localhost:27017/")  # TODO do we need to connect to lab machine
+    db = client["291_proj2"]  # TODO do we need to take input for the name?
+
+    collection = db['data']
+    with open('file_name.json') as file:
+        data = json.load(file)
+    # print(clothes_data)
+    collection.insert_many(data)
 
 
 def articles():

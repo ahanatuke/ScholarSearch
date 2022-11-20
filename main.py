@@ -1,10 +1,16 @@
-import phase1
+import initDB as store
 import articles
 import authors
 import venues
 
 
 def main():
+
+    jsonFile = input('Please enter a json file name: ').strip() + '.json'
+    portNum = input('Please enter a port number: ')
+
+    store.init_db(jsonFile, portNum)
+
     print("To search for an article enter 'A'"
           "To search for an author enter 'U'"
           "To list venues within a range enter 'V' "

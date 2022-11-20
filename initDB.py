@@ -11,8 +11,8 @@ def init_db(jsonFile, portNum):
         db = connection['291db']
 
         # If the collection exists, your program should drop it and create a new collection
-        list_of_collections = db.list_collection_names()  # Return a list of collections in '291db'
-        if 'dblp' in list_of_collections:
+        collectionsList = db.list_collection_names()  # Return a list of collections in '291db'
+        if 'dblp' in collectionsList:
             col = db['dblp']
             col.drop()
 

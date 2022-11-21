@@ -29,7 +29,12 @@ def init_db(jsonFile, portNum):
         # TODO Process it as one-row-at-a time, and not to fully load the file into memory
         """
         mongoimport -db '291db' -collection 'dblp' --type=json --file jsonFile
+        
+        mongoimport --db 291db -- collection dblp --type=json --batchSize 1  --file jsonFile 
+        TAKEN FROM: https://dev.to/miladr0/import-large-json-file-into-mongodb-using-mongoimport-34ai
+
         """
+        return collection
         # with open(jsonFile) as file:
         #     data = json.load(file)
         # print(data)

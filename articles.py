@@ -1,51 +1,106 @@
 from math import floor
 
 
-def searchArticles():
+def searchArticles(collection):
     print("Please enter in keywords for articles using spaces only")
     uI = input("> ").lower().split()
-
+    allMatching = ()
     # mongoDB here
     # TODO retrieve all articles that match all those keywords (AND semantics)
     '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
     be case-insensitive) '''
 
-    # TODO For each matching article, display the id, the title, the year and the venue fields
+    # maybe use $regex?
+    # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
 
+    for i in range(len(uI)):
+        results = collection.findOne([
+            {'$or': [{"title": uI[i]},
+                     {"authors": uI[i]},
+                     {"abstract": uI[i]},
+                     {"venue": uI[i]},
+                     {"year": uI[i]}
+                     ]
+             }
+        ])
+        allMatching += results
+
+    # TODO For each matching article, display the id, the title, the year and the venue fields
+    for i in range(len(allMatching)):
+        print(str(i) + ':', results[i][0], results[i][1], results[i][4], results[i][3])
     # TODO Select an article to see all fields including the abstract and the authors in addition to the fields shown before
     '''If the article is referenced by other articles, the id, the title, and the year of those references should be 
     also listed '''
+    uI = input("Please select a number from 0 -", len(allMatching) - 1, "to select an article.")
+    check = True
+    while check:
+        try:
+            intuI = int(uI)
+            if intuI < 0:
+                raise Exception
+            if intuI >= len(allMatching):
+                raise Exception
+            check = False
+        except:
+            print("Invalid input, please try again.")
+
+    '''
+    CONCEPTS: 
+    Use paginate from proj1 and past that into here? 
+    If not maybe ask user to select 1-n for an article and then go from there using mongoDB 
+    '''
 
     return
 
 
-def addArticle():
+def addArticle(collection):
     abstract = None
     venue = None
     references = []
     n_citations = 0
     check = True
 
-    id = input("Add an id\n> ").lower().strip()
-    title = input("Add a title\n>").lower().strip()
-    authors = input("Add the list of authors using spaces only\n>").lower().split()
-    year = input("Add the year for the article\n>").lower().strip()
+    while check:
+        idInput = input("Add an id\n> ").lower().strip()
+        result = collection.find(
+            {'$match': {"id": idInput}}
+        )
+
+        if result is not None:
+            print("This id is already taken, please try again.")
+        else:
+            check = False
+    check = True
+    titleInput = input("Add a title\n>").lower().strip()
+    authorsInput = input("Add the list of authors using spaces only\n>").lower().split()
+    yearInput = input("Add the year for the article\n>").lower().strip()
 
     while check:
-        if len(authors) < 1:
+        if len(authorsInput) < 1:
             print("Please include at least one author.")
             input("Add the list of authors using spaces only\n>").lower().split()
-        check = False
+        else:
+            check = False
+    check = True
     while check:
         try:
-            yearInt = int(year)
+            yearInt = int(yearInput)
+            check = False
         except:
             print("The year added is not a valid year, please try again.")
             year = input("Add the year for the article\n>").lower().strip()
-        check = False
 
     # TODO Add an article to the collection by providing a unique id, a title, a list of authors, and a year
-
+    newArticle = {"id": idInput,
+                  "title": titleInput,
+                  "authors": authorsInput,
+                  "year": yearInt,
+                  "venue": venue,
+                  "n_citation": n_citations,
+                  "references": references,
+                  "abstract": abstract
+                  }
+    collection.insertOne(newArticle)
     # TODO The fields abstract and venue should be set to null, references should be set to an empty array and
     #  n_citations should be set to zero
 

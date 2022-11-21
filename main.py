@@ -7,7 +7,7 @@ import venues
 def main():
 
     jsonFile = input('Please enter a json file name: ').strip() + '.json'
-    portNum = 'mongodb://localhost:' + input('Please enter a port number: ').strip()
+    portNum = 'mongodb://localhost:' + input('Please enter a port number: ').strip() + '/'
 
     store.init_db(jsonFile, portNum)
 

@@ -18,11 +18,22 @@ def init_db(jsonFile, portNum):
 
         collection = db['dblp']
 
+        # TODO connect mongoimport to the MongoDB instance
+        """
+        mongoimport - -uri
+        'mongodb+srv://mycluster-ABCDE.azure.mongodb.net/test?retryWrites=true&w=majority'
+        --username = 'MYUSERNAME'
+        --password = 'SECRETPASSWORD'
+        """
+
         # TODO Process it as one-row-at-a time, and not to fully load the file into memory
-        with open(jsonFile) as file:
-            data = json.load(file)
+        """
+        mongoimport -db '291db' -collection 'dblp' --type=json --file jsonFile
+        """
+        # with open(jsonFile) as file:
+        #     data = json.load(file)
         # print(data)
-        collection.insert_many(data)
+        # collection.insert_many(data)
 
     else:
         print('Database 291db already exists.\n Exiting program...')

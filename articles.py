@@ -29,8 +29,11 @@ def searchArticles(collection):
     for i in range(len(allMatching)):
         print(str(i) + ':', results[i][0], results[i][1], results[i][4], results[i][3])
     # TODO Select an article to see all fields including the abstract and the authors in addition to the fields shown before
+
     '''If the article is referenced by other articles, the id, the title, and the year of those references should be 
     also listed '''
+
+    # TODO print the specific list and get the year of every reference
     uI = input("Please select a number from 0 -", len(allMatching) - 1, "to select an article.")
     check = True
     while check:
@@ -73,7 +76,6 @@ def addArticle(collection):
     check = True
     titleInput = input("Add a title\n>").lower().strip()
     authorsInput = input("Add the list of authors using spaces only\n>").lower().split()
-    yearInput = input("Add the year for the article\n>").lower().strip()
 
     while check:
         if len(authorsInput) < 1:
@@ -81,7 +83,9 @@ def addArticle(collection):
             input("Add the list of authors using spaces only\n>").lower().split()
         else:
             check = False
+
     check = True
+    yearInput = input("Add the year for the article\n>").lower().strip()
     while check:
         try:
             yearInt = int(yearInput)

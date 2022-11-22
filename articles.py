@@ -28,7 +28,8 @@ def searchArticles(collection):
     # TODO For each matching article, display the id, the title, the year and the venue fields
     for i in range(len(allMatching)):
         print(str(i) + ':', results[i][0], results[i][1], results[i][4], results[i][3])
-    # TODO Select an article to see all fields including the abstract and the authors in addition to the fields shown before
+
+    # TODO Select an article to see all fields including the abstract and authors in addition to the fields shown before
 
     '''If the article is referenced by other articles, the id, the title, and the year of those references should be 
     also listed '''

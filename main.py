@@ -9,7 +9,7 @@ def main():
     jsonFile = input('Please enter a json file name: ').strip() + '.json'
     portNum = 'mongodb://localhost:' + input('Please enter a port number: ').strip() + '/'
 
-    store.init_db(jsonFile, portNum)
+    collection = store.init_db(jsonFile, portNum)
 
     print("To search for an article enter 'A'"
           "To search for an author enter 'U'"
@@ -20,12 +20,16 @@ def main():
     while not done:
         uI = input("> ").lower().strip()
         if uI == 'a':
+            articles.searchArticles(collection)
             pass
         elif uI == 'u':
+            authors.searchAuthors(collection)
             pass
         elif uI == 'v':
+            venues.listVenues()
             pass
         elif uI == 'r':
+            articles.addArticle(collection)
             pass
         elif uI == 'q':
             print("Exiting program...")

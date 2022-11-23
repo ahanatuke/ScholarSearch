@@ -1,4 +1,4 @@
-def listVenues():
+def listVenues(collection):
     print("Enter the amount of top venues you would like to see\nHit ENTER to go back to the mainpage\nHit E to exit the program")
     uI = input("> ")
     check = True
@@ -9,7 +9,7 @@ def listVenues():
             elif uI == 'E':
                 print("Exiting program...\nGoodbye.")
                 exit()
-            uI = int(uI)
+            intuI = int(uI)
             check = True
         except:
             print("The input is not a number, please try again"
@@ -23,6 +23,33 @@ def listVenues():
     from article
     group by venue;
     '''
+    #https://stackoverflow.com/questions/24761266/select-group-by-count-and-distinct-count-in-same-mongodb-query/24770233#24770233
+    collection.aggregate([
+        {"$match":
+            {"venue": {"$ne": "null"}}
+         },
+
+        {"$group":  {
+            "_id":
+                {
+                    "venue": "$venue",
+                    "id": "$id"
+                },
+            }},
+
+        {"$group": {
+            "_id": {
+                "venue": "$_id.venue",
+                "id": "$_id.id"
+            },
+            "distinctID": {"$sum": 1}
+        }},
+
+
+
+        {"$sort": "$._id.id"},
+        {"$limit": intuI}
+    ])
 
     # TODO For each venue, list the venue, the number of articles in that venue, and the number of articles that
     #  reference a paper in that venue

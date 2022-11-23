@@ -19,12 +19,20 @@ def searchArticles(collection):
     #get one and add it into all matching
     for i in range(len(uI)):
         results = collection.findOne([
-            {'$or': [{"title": uI[i]},
-                     {"authors": uI[i]},
-                     {"abstract": uI[i]},
-                     {"venue": uI[i]},
-                     {"year": uI[i]}
-                     ]
+            {'$or': [
+                {"title": uI[i]},
+                {"authors": uI[i]},
+                {"abstract": uI[i]},
+                {"venue": uI[i]},
+                {"year": uI[i]}
+                ]
+             },
+            {'$project':
+                 {
+                    "title": 1,
+                    "year": 1,
+                    "venue": 1
+                  }
              }
         ])
         allMatching += results

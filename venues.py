@@ -1,9 +1,14 @@
 def listVenues():
-    print("Enter the amount of top venues you would like to see")
+    print("Enter the amount of top venues you would like to see\nHit ENTER to go back to the mainpage\nHit E to exit the program")
     uI = input("> ")
     check = True
     while check:
         try:
+            if uI == '':
+                return
+            elif uI == 'E':
+                print("Exiting program...\nGoodbye.")
+                exit()
             uI = int(uI)
             check = True
         except:

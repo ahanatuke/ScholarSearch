@@ -5,8 +5,9 @@ import itertools
 import os
 
 def init_db(jsonFile, portNum):
-    portNum = 'mongodb://localhost:27017/'  # temp todo remove this before submit
-    # todo fix before submission
+
+    # TODO remove hard codes before submission
+    portNum = 'mongodb://localhost:27017/'
     jsonFile = 'db.json'
     connection = MongoClient(portNum)
     # connect to the server and will create a database named 291db

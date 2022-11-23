@@ -6,10 +6,10 @@ def searchAuthors(collection):
     print("Please enter in keywords to search for authors using spaces only. "
           "\nHit ENTER to return back to the mainpage.")
 
-    uI = input("> ").lower()
+    uI = input("> ")
     if uI == '':
         return
-    uI = uI.split()
+    uI = uI.lower().split()
 
     # mongoDB here
 

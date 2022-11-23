@@ -3,10 +3,10 @@ from math import floor
 
 def searchArticles(collection):
     print("Please enter in keywords for articles using spaces only.\nHit enter to go back to the mainpage.")
-    uI = input("> ").lower()
+    uI = input("> ")
     if uI == '':
         return
-    uI = uI.split()
+    uI = uI.lower().split()
     allMatching = ()
     # mongoDB here
     # TODO retrieve all articles that match all those keywords (AND semantics)
@@ -80,9 +80,12 @@ def addArticle(collection):
     check = True
 
     while check:
-        idInput = input("Add an id\n> ").lower().strip()
+        idInput = input("Add an id\nHit ENTER to go back to the mainpage\n> ").lower().strip()
+        if idInput == '':
+            return
+
         result = collection.find(
-            {'$match': {"id": idInput}}
+            {"id": idInput}
         )
 
         if result is not None:

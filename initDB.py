@@ -7,7 +7,7 @@ def init_db(jsonFile, portNum):
     connection = MongoClient(portNum)
     # connect to the server and will create a database named 291db TODO (if it does not exist -- then what??)
     dbNames = connection.list_database_names()
-    if '291db' not in dbNames:
+    if '291db' not in dbNames:  # TODO might not need this
         db = connection['291db']
 
         # If the collection exists, your program should drop it and create a new collection

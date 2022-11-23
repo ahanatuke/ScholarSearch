@@ -1,9 +1,12 @@
+import venues
+
+
 def searchAuthors(collection):
+    # TODO Provide a keyword and see all authors whose names contain the keyword (the matches should be case-insensitive)
     print("Please enter in keywords to search for authors using spaces only ")
     uI = input("> ").lower().split()
 
     # mongoDB here
-    # TODO Provide a keyword and see all authors whose names contain the keyword (the matches should be case-insensitive)
 
     # TODO For each author, list the author name and the number of publications
     results = collection.find({"name": '/' + uI + '/'})
@@ -31,6 +34,13 @@ def searchAuthors(collection):
     '''The result should be sorted based on year with more recent articles shown first '''
 
     ''' 
-    query
+    CONCEPT: (needs work)
+     
+    SELECT *
+    FROM article a
+    WHERE (SELECT a.title, a.year, v.name
+           FROM venue v
+           WHERE 
+           ORDER BY a.year)
     '''
     return

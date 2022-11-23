@@ -26,7 +26,7 @@ def main():
             authors.searchAuthors(collection)
             pass
         elif uI == 'v':
-            venues.listVenues()
+            venues.listVenues(collection)
             pass
         elif uI == 'r':
             articles.addArticle(collection)

@@ -2,8 +2,11 @@ from math import floor
 
 
 def searchArticles(collection):
-    print("Please enter in keywords for articles using spaces only")
-    uI = input("> ").lower().split()
+    print("Please enter in keywords for articles using spaces only.\nHit enter to go back to the mainpage.")
+    uI = input("> ").lower()
+    if uI == '':
+        return
+    uI = uI.split()
     allMatching = ()
     # mongoDB here
     # TODO retrieve all articles that match all those keywords (AND semantics)
@@ -13,6 +16,7 @@ def searchArticles(collection):
     # maybe use $regex?
     # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
 
+    #get one and add it into all matching
     for i in range(len(uI)):
         results = collection.findOne([
             {'$or': [{"title": uI[i]},
@@ -26,6 +30,8 @@ def searchArticles(collection):
         allMatching += results
 
     # TODO For each matching article, display the id, the title, the year and the venue fields
+
+    #if mongoDB returns an entire column we an simply display the parts we want to show for now
     for i in range(len(allMatching)):
         print(str(i) + ':', results[i][0], results[i][1], results[i][4], results[i][3])
 
@@ -35,10 +41,15 @@ def searchArticles(collection):
     also listed '''
 
     # TODO print the specific list and get the year of every reference
-    uI = input("Please select a number from 0 -", len(allMatching) - 1, "to select an article.")
+    uI = input("Please select a number from 0 -", len(allMatching) - 1, "to select an article.\nHit enter to leave\nE to exit")
     check = True
     while check:
         try:
+            if uI == '':
+                return
+            elif uI == 'E':
+                print("Exiting program...\nGoodbye.")
+                exit()
             intuI = int(uI)
             if intuI < 0:
                 raise Exception
@@ -48,11 +59,7 @@ def searchArticles(collection):
         except:
             print("Invalid input, please try again.")
 
-    '''
-    CONCEPTS: 
-    Use paginate from proj1 and past that into here? 
-    If not maybe ask user to select 1-n for an article and then go from there using mongoDB 
-    '''
+
 
     return
 

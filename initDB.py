@@ -1,6 +1,7 @@
 import pymongo
 from pymongo import MongoClient
 import json
+import itertools
 import os
 
 def init_db(jsonFile, portNum):
@@ -28,16 +29,36 @@ def init_db(jsonFile, portNum):
 
         collection = db['dblp']
 
+        #incase we cannot get mongoimport to load
+        ''' 
+        with open(jsonFile) as file:
+            for item in file:
+                part = json.load(item)
+                collection.insert_one(part)
+        
+        ##OR##
+        
+        with open(jsonFile) as file:
+            lenJson = len(file)    
+            quarter = lenJson / 4
+            start = 0
+            end = quarter
+            while end < lenJson
+                fileData = json.load(itertools.islice(file.items(), start, end + 1 ))
+                collection.insert_many(fileData)
+                start = quarter
+                end = quarter + quarter
+        '''
         #jsonFile = "./"+jsonFile #note program assumes .py files and file is in same directory, also ENTER EXTENSION
         importCmd = "mongoimport --db 291db --collection dblp --file "+ jsonFile
 
         os.system(importCmd)
         collection.create_index("year" )
-
         return collection
+
+
         # with open(jsonFile) as file:
         #     data = json.load(file)
-        # print(data)
         # collection.insert_many(data)
 
     else:

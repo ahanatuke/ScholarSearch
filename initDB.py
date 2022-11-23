@@ -26,28 +26,12 @@ def init_db(jsonFile, portNum):
 
         collection = db['dblp']
 
-        # TODO connect mongoimport to the MongoDB instance
-        """
-        mongoimport - -uri
-        'mongodb+srv://mycluster-ABCDE.azure.mongodb.net/test?retryWrites=true&w=majority'
-        --username = 'MYUSERNAME'
-        --password = 'SECRETPASSWORD'
-        shouldn't need auth right
-        """
-
         #jsonFile = "./"+jsonFile #note program assumes .py files and file is in same directory, also ENTER EXTENSION
         importCmd = "mongoimport --db 291db --collection dblp --file "+ jsonFile
 
         os.system(importCmd)
         collection.create_index("year" )
-        # TODO Process it as one-row-at-a time, and not to fully load the file into memory
-        """
-        mongoimport -db '291db' -collection 'dblp' --type=json --file jsonFile
-        
-        mongoimport --db 291db -- collection dblp --type=json --batchSize 1  --file jsonFile 
-        TAKEN FROM: https://dev.to/miladr0/import-large-json-file-into-mongodb-using-mongoimport-34ai
 
-        """
         return collection
         # with open(jsonFile) as file:
         #     data = json.load(file)

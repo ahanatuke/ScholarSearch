@@ -1,9 +1,12 @@
+import pymongo
 from pymongo import MongoClient
 import json
-
+import os
 
 def init_db(jsonFile, portNum):
     portNum = 'mongodb://localhost:27017/'  # temp todo remove this before submit
+    # todo fix before submission
+    jsonFile = 'db.json'
     connection = MongoClient(portNum)
     # connect to the server and will create a database named 291db
     # implemented in such a way that if it *is* in list_db_names, it just connects to that one, checks for dblp, if it exists, it drops it
@@ -16,8 +19,7 @@ def init_db(jsonFile, portNum):
 
         # If the collection exists, your program should drop it and create a new collection
         collectionsList = db.list_collection_names()  # Return a list of collections in '291db'
-        # this will never work afaiu, as if 291db doesn't exist as a db, it can't have the collection dblp
-        # todo add an elif statement that covers the other case
+
         if 'dblp' in collectionsList:
             col = db['dblp']
             col.drop()
@@ -30,8 +32,14 @@ def init_db(jsonFile, portNum):
         'mongodb+srv://mycluster-ABCDE.azure.mongodb.net/test?retryWrites=true&w=majority'
         --username = 'MYUSERNAME'
         --password = 'SECRETPASSWORD'
+        shouldn't need auth right
         """
 
+        #jsonFile = "./"+jsonFile #note program assumes .py files and file is in same directory, also ENTER EXTENSION
+        importCmd = "mongoimport --db 291db --collection dblp --file "+ jsonFile
+
+        os.system(importCmd)
+        collection.create_index("year" )
         # TODO Process it as one-row-at-a time, and not to fully load the file into memory
         """
         mongoimport -db '291db' -collection 'dblp' --type=json --file jsonFile
@@ -55,4 +63,7 @@ def init_db(jsonFile, portNum):
             col.drop()
 
         collection = db['dblp']
-        #todo populate db
+        importCmd = "mongoimport --db 291db --collection dblp --file " + jsonFile
+
+        os.system(importCmd)
+        collection.create_index("year" )

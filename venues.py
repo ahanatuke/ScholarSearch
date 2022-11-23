@@ -14,7 +14,7 @@ def listVenues():
     # DB here
     # TODO The user should be able to enter a number n and see a listing of top n venues
     '''
-     select venue, count(distinct id)
+    select venue, count(distinct id)
     from article
     group by venue;
     '''

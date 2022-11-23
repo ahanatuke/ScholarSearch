@@ -12,9 +12,11 @@ def init_db(jsonFile, portNum):
     # implemented in such a way that if it *is* in list_db_names, it just connects to that one, checks for dblp, if it exists, it drops it
     # i don't need to explain this all to you guys you're smart
     dbNames = connection.list_database_names()
+
     # afai can tell, there's no real difference between handling for 291db existing vs handling for it *not* existing,
     # might be worth removing this but also i am real loopy
-    if '291db' not in dbNames:
+    if '291db' not in dbNames:  # TODO might not need this
+
         db = connection['291db']
 
         # If the collection exists, your program should drop it and create a new collection

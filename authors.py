@@ -12,23 +12,30 @@ def searchAuthors(collection):
     uI = uI.lower().split()
 
     # mongoDB here
-
+    matchingResults = []
     # TODO For each author, list the author name and the number of publications
     #get all where some part of name matches with uI, group by the name and count publications
-    results = collection.aggregate([
-        {
-            "$match":
-                {"name": '/' + uI + '/'}
-        },
-        {
-            "$group":
-                {
-                    "_id": "name",
-                    "publications": {"$count": {}}
-                }
-        }])
 
-    print("Please select from 0 - ", len(results) - 1, "and select an author to look for.\nHit ENTER to leave\nE to exit")
+    for item in uI:
+
+        results = collection.aggregate([
+            {
+                "$text":
+                    {
+                        "$search": "/"+item+"/",
+                        "$caseSensitive": "false"
+                    }
+            },
+            {
+                "$group":
+                    {
+                        "_id": "name",
+                        "publications": {"$count": {}}
+                    }
+            }])
+        matchingResults.append(results)
+    print(matchingResults)
+    print("Please select from 0 - ", len(matchingResults) - 1, "and select an author to look for.\nHit ENTER to leave\nE to exit")
     uI = input("> ").lower()
 
     check = True

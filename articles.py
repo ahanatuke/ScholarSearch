@@ -13,12 +13,11 @@ def searchArticles(collection):
     '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
     be case-insensitive) '''
 
-    # maybe use $regex?
     # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
 
     #get one and add it into all matching
     for i in range(len(uI)):
-        results = collection.findOne([
+        results = collection.find_one([
             {'$or': [
                 {"title": uI[i]},
                 {"authors": uI[i]},

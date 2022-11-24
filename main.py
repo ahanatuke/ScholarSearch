@@ -1,4 +1,5 @@
-import initDB as store
+import  importlib
+store = importlib.import_module("load-json")
 import articles
 import authors
 import venues
@@ -6,10 +7,10 @@ import venues
 
 def main():
 
-    jsonFile = input('Please enter a json file name: ').strip() + '.json'
-    portNum = 'mongodb://localhost:' + input('Please enter a port number: ').strip() + '/'
+    jsonFile = input('Please enter a json file name  (i.e. "file.json"): ').strip()
+    portNum = 'mongodb://localhost:' + input('Please enter a port number (i.e. 27017): ').strip() + '/'
 
-    collection = store.init_db(jsonFile, portNum)
+    collection, db = store.init_db(jsonFile, portNum)
 
     done = False
     while not done:
@@ -26,7 +27,7 @@ def main():
             authors.searchAuthors(collection)
             pass
         elif uI == 'v':
-            venues.listVenues(collection)
+            venues.listVenues(collection, db)
             pass
         elif uI == 'r':
             articles.addArticle(collection)
@@ -37,7 +38,7 @@ def main():
             done = True
         else:
             print("Invalid input, try again.")
-            uI = input("> ").lower().strip()
+            #uI = input("> ").lower().strip()
 
     return
 

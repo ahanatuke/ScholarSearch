@@ -136,12 +136,40 @@ def addArticle(collection):
     #  n_citations should be set to zero
 
     collection.update_many(
-        {"abstract":
-             {"$type": 16}
-         },
-        {"$set":
-             {"abstract": {"$toString": "$abstract"}}
-         }
+        {"abstract": ""},  # set to NULL
+        {"venue": ""},  # set to NULL
+        {"reference": "$toArray"},  # set to empty array
+        {"n_citations": 0},  # set to 0
     )
+
+    # collection.update_many(
+    #     {"abstract":
+    #          {"$type": "str"}
+    #      },
+    #     {"$set":
+    #          {"abstract": {"": "$abstract"}}  # set to NULL
+    #      },
+    #
+    #     {"venue":
+    #          {"$type": "str"}
+    #      },
+    #     {"$set":
+    #          {"venue": {"": "$venue"}}  # set to NULL
+    #      },
+    #
+    #     {"reference":
+    #          {"$type": "str"}
+    #      },
+    #     {"$set":
+    #          {"reference": {"$toArray": "$reference"}}  # set to empty array
+    #      },
+    #
+    #     {"n_citations":
+    #          {"$type": "int"}
+    #      },
+    #     {"$set":
+    #          {"n_citations": {"$toInt": "$n_citations"}}  # set to 0
+    #      }
+    # )
 
     return

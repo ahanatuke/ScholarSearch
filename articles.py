@@ -1,6 +1,4 @@
 def searchArticles(collection):
-    print("Please enter in a keyword to search for authors."
-          "\nHit ENTER to return back to the main page.")
 
     match = False
     while not match:
@@ -21,10 +19,14 @@ def searchArticles(collection):
             print("No matches found.")
             return
         else:
-            for i in range(1, len(allMatching) + 1):
-                print(f"{i}: {allMatching[i].get('_id', '-')}, {allMatching[i].get('title', '-')}, {allMatching[i]('year', '-')}, {allMatching[i].get('venue', '-')}")
+            i = 1
+            for item in allMatching:  # TODO will print blank space instead of '-'
+                print(f"{i}: {item.get('_id', '-')}, {item.get('title', '-')}, {item.get('year', '-')}, {item.get('venue', '-')}")
+                i += 1
+            # for i in range(len(allMatching)):
+            #     print(f"{i}: {allMatching[i].get('_id', '-')}, {allMatching[i].get('title', '-')}, {allMatching[i].get('year', '-')}, {allMatching[i].get('venue', '-')}")
                 # print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'],
-                #       ",", allMatching[i]['venue'])  # TODO DONE  current: 0: 637feeb5b7034047a56b3d04 , A Self-Stabilizing Algorithm for Finding the Cutting Center of a Tree. , 2003 , parallel and distributed processing techniques and applications
+                #       ",", allMatching[i]['venue'])
             match = True
 
     check = True
@@ -40,7 +42,7 @@ def searchArticles(collection):
             print("Exiting program...\nGoodbye.")
             exit()
         try:
-            intuI = int(uI)
+            intuI = int(uI) - 1
             if intuI < 0:
                 raise
             if intuI >= len(allMatching):
@@ -83,7 +85,7 @@ def searchArticles(collection):
             except Exception as e:
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
-                field = "Referenced in: "
+                field = "Referenced in"
                 results = collection.find(
                     {"references": article["_id"]},
                     {"_id": 1, "title": 1, "year": 1}
@@ -148,6 +150,10 @@ def addArticle(collection):
                   }
     collection.insert_one(newArticle)
 
-    print(f"New article successfully added:\n {idInput}, {titleInput}, {authorsInput}, {yearInput}, {venue}, {n_citations}, {references}, {abstract}")
+    print(f"New article successfully added:\n"
+          f"Id: {idInput}\n"
+          f"Title: {titleInput}\n"
+          f"Authors: {', '.join(authorsInput)}\n"
+          f"Year: {yearInput}")
 
     return

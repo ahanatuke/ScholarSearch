@@ -42,7 +42,7 @@ def searchAuthors(collection):
         print(f"{i}: {item['_id']}, publications: {item['publications']}")  # TODO current: 0: {'_id': 'Jovan Dj. Golic', 'publications': 1} DONE
         i += 1
 
-    print("Please select from 0 -", len(results) - 1, "and select an author to look for.\nHit ENTER to leave\nHit E to exit")
+    print("Please select from 1 -", len(results), "and select an author to look for.\nHit ENTER to leave\nHit E to exit")
 
     check = True
     while check:
@@ -53,7 +53,7 @@ def searchAuthors(collection):
             print("Exiting program...\nGoodbye.")
             exit()
         try:
-            intuI = int(uI)
+            intuI = int(uI) - 1
             if intuI < 0:
                 raise Exception
             if intuI >= len(results):
@@ -84,7 +84,7 @@ def searchAuthors(collection):
     ])
     results = list(results)
 
-    for item in results:  # TODO DONE
+    for item in results:  # TODO if there's a blank it'll print it instead of the mssg
         print(item.get("title", "No title available"))
         print(item.get("venue", "No venue available"))
         print(item.get("abstract", "No abstract available"))

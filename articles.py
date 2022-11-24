@@ -150,11 +150,8 @@ def addArticle(collection):
     # TODO The fields abstract and venue should be set to null, references should be set to an empty array and
     #  n_citations should be set to zero
     # TODO test query
-    collection.insert_many(
-        {"abstract": None},  # set to NULL
-        {"venue": None},  # set to NULL
-        {"reference": []},  # set to empty array
-        {"n_citations": 0}  # set to 0
+    collection.insertOne(
+        {"abstract": None, "venue": None, "reference": [], "n_citations": 0},
     )
 
     return

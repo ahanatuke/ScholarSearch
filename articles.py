@@ -50,7 +50,7 @@ def searchArticles(collection):
             print("No results found.")
         else:
             for i in range(len(allMatching)):
-                print(str(i) + ':', results[i][0], results[i][1], results[i][4], results[i][3])
+                print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'], ",", allMatching[i]['venue'])
             match = True
 
 
@@ -62,13 +62,14 @@ def searchArticles(collection):
     print("Select a number corresponding to an article to see the details:")
     selected = int(input('> '))
     # TODO fix query
+
     # result = collection.find([
     #     {"__id" : selected}
     # ]).skip(selected - 1).limit(1)
     #
-    # result = list(result)
-    # for item in result:
-    #     print(item)
+    # i = selected
+    # print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'], ",", allMatching[i]['venue'])
+
 
     # TODO print the specific list and get the year of every reference
     uI = input("Please select a number from 0 -", len(allMatching) - 1, "to select an article.\nHit enter to leave\nE to exit")

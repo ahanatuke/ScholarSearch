@@ -7,7 +7,7 @@ import os
 def init_db(jsonFile, portNum):
     # TODO remove hard codes before submission
     portNum = 'mongodb://localhost:27017/'
-    jsonFile = 'db.json'
+    #jsonFile = 'db.json'
     connection = MongoClient(portNum)
     # connect to the server and will create a database named 291db
     # implemented in such a way that if it *is* in list_db_names, it just connects to that one, checks for dblp, if it exists, it drops it
@@ -28,6 +28,8 @@ def init_db(jsonFile, portNum):
         col.drop()
 
     collection = db['dblp']
+
+
 
 
     #jsonFile = "./"+jsonFile #note program assumes .py files and file is in same directory, also ENTER EXTENSION
@@ -54,4 +56,18 @@ def init_db(jsonFile, portNum):
         ]
 
     )
+
+    '''collection.aggregate([
+        {"$match": {"_id": {"ne": ''} } },
+        {"$lookup":  {"from": "dblp",
+                      "localField": "id",
+                      "foreignField": "references",
+                      "as": "ref"}},
+        {"$unwind": "$ref"},
+        {"$group": {"_id": "$venue",
+                    "venueIDRef": {"$addToSet": "$ref.id"}}},
+        {"$project": {"_id": 1, "n_references": {"$size": "$venueIDRef"}}},
+        {"$out": "venues"}
+
+    ])'''
     return collection

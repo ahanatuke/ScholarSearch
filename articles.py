@@ -27,7 +27,10 @@ def searchArticles(collection):
 
         # get one and add it into all matching
         #for i in range(len(uI)):
-        results = collection.aggregate([
+        results = collection.find(
+            {"$text": {"$search": uiStr, "$caseSensitive": False}}
+        )
+        '''results = collection.aggregate([
             {'$match' : {'$or':
                 [
                 {"title": {'$regex' : uiStr, '$options' : 'i'}},
@@ -44,7 +47,7 @@ def searchArticles(collection):
                     "venue": 1
                   }
              }
-        ])
+        ])'''
         allMatching = list(results)
 
         # TODO For each matching article, display the id, the title, the year and the venue fields
@@ -63,6 +66,7 @@ def searchArticles(collection):
     '''If the article is referenced by other articles, the id, the title, and the year of those references should be 
     also listed '''
 
+
     print("Select a number corresponding to an article to see the details:\nHit ENTER to go back to the main page\nHit E to exit ")
     # TODO fix query
     check = True
@@ -70,27 +74,22 @@ def searchArticles(collection):
         uI = input("> ").lower().strip()
         if uI == '':
             return
-        elif uI == 'e':
+        if uI == 'e':
             print("Exiting program...\nGoodbye.")
             exit()
         try:
             intuI = int(uI)
             if intuI < 0:
                 raise Exception
-            if intuI >= len(results):
+            if intuI >= len(allMatching):
                 raise Exception
             check = False
         except:
             print("Invalid input, please try again.")
 
-    allMatching[intuI]["_id"]
-    result = collection.aggregate([
-        {"$match":
-             {"$text": {
-                 "$search": "/"
-             }}
-         }
-    ])
+    article = allMatching[intuI]["_id"]
+    print(article)
+
     # result = collection.find([
     #     {"__id" : selected}
     # ]).skip(selected - 1).limit(1)

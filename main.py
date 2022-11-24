@@ -1,4 +1,4 @@
-import  importlib
+import importlib
 store = importlib.import_module("load-json")
 import articles
 import authors
@@ -38,7 +38,6 @@ def main():
             done = True
         else:
             print("Invalid input, try again.")
-            #uI = input("> ").lower().strip()
 
     return
 

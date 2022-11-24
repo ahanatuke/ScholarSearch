@@ -135,4 +135,13 @@ def addArticle(collection):
     # TODO The fields abstract and venue should be set to null, references should be set to an empty array and
     #  n_citations should be set to zero
 
+    collection.update_many(
+        {"abstract":
+             {"$type": 16}
+         },
+        {"$set":
+             {"abstract": {"$toString": "$abstract"}}
+         }
+    )
+
     return

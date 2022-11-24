@@ -12,15 +12,15 @@ def searchArticles(collection):
         uI = uI.lower().split(' ')
         #allMatching = []
         # mongoDB here
-        # TODO retrieve all articles that match all those keywords (AND semantics)
+        # TODO DONE retrieve all articles that match all those keywords (AND semantics)
         '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
         be case-insensitive) '''
 
         uiStr = '|'.join(uI)
 
-        #uiStr = 'algorithm|object'
+        uiStr = 'algorithm|object'
         # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
-        # TODO fix this query
+
         # get one and add it into all matching
         #for i in range(len(uI)):
         results = collection.aggregate([
@@ -150,7 +150,7 @@ def addArticle(collection):
     # TODO The fields abstract and venue should be set to null, references should be set to an empty array and
     #  n_citations should be set to zero
     # TODO test query
-    collection.update_many(
+    collection.insert_many(
         {"abstract": None},  # set to NULL
         {"venue": None},  # set to NULL
         {"reference": []},  # set to empty array

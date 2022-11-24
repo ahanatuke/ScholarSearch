@@ -23,7 +23,7 @@ def searchArticles(collection):
         else:
             for i in range(len(allMatching)):
                 print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'],
-                      ",", allMatching[i]['venue'])
+                      ",", allMatching[i]['venue'])  # TODO format better  current: 0: 637feeb5b7034047a56b3d04 , A Self-Stabilizing Algorithm for Finding the Cutting Center of a Tree. , 2003 , parallel and distributed processing techniques and applications
             match = True
 
     check = True
@@ -62,7 +62,7 @@ def searchArticles(collection):
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
                 field = "Authors"
-                print(field + ':', article["authors"])
+                print(field + ':', article["authors"])  # TODO format better  current: Authors: ['Pranay Chaudhuri', 'Hussein Thompson']
             except Exception as e:
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
@@ -87,9 +87,9 @@ def searchArticles(collection):
                     {"_id": 1, "title": 1, "year": 1}
                 )
                 results = list(results)
-                print(results)
+                print(results)  # TODO get rid of?
                 for item in results:
-                    print(field + ':', item)
+                    print(field + ':', item)  # TODO format better  current: []
             except Exception as e:
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
 
@@ -117,23 +117,23 @@ def addArticle(collection):
         else:
             check = False
     check = True
-    titleInput = input("Add a title\nHit ENTER to exit\n>").lower().strip()
+    titleInput = input("Add a title\nHit ENTER to exit\n> ").lower().strip()
     if titleInput == '':
         return
-    authorsInput = input("Add the list of authors using spaces only\nHit ENTER to exit\n>").lower().split()
+    authorsInput = input("Add the list of authors using spaces only\nHit ENTER to exit\n> ").lower().split()
 
     if len(authorsInput) < 1:
         return
 
     check = True
-    yearInput = input("Add the year for the article\n>").lower().strip()
+    yearInput = input("Add the year for the article\n> ").lower().strip()
     while check:
         try:
             yearInt = int(yearInput)
             check = False
         except:
             print("The year added is invalid, please try again.")
-            yearInput = input("Add the year for the article\n>").lower().strip()
+            yearInput = input("Add the year for the article\n> ").lower().strip()
 
     newArticle = {"id": idInput,
                   "title": titleInput,
@@ -145,5 +145,7 @@ def addArticle(collection):
                   "abstract": abstract
                   }
     collection.insert_one(newArticle)
+
+    print(f"New article successfully added:\n {idInput}, {titleInput}, {authorsInput}, {yearInput}, {venue}, {n_citations}, {references}, {abstract}")
 
     return

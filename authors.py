@@ -39,7 +39,7 @@ def searchAuthors(collection):
         return
     i = 0
     for item in results:
-        print(str(i) + ":", item)
+        print(str(i) + ":", item)  # TODO format better  current: 0: {'_id': 'Jovan Dj. Golic', 'publications': 1}
         i += 1
 
     print("Please select from 0 -", len(results) - 1, "and select an author to look for.\nHit ENTER to leave\nHit E to exit")
@@ -84,11 +84,17 @@ def searchAuthors(collection):
     ])
     results = list(results)
 
-    for item in results:
+    for item in results:  # TODO format better
         print(item.get("title", ""))
         print(item.get("venue", ""))
         print(item.get("abstract", ""))
         print(item.get("year", ""))
+    ''' current
+    Vectorial fast correlation attacks.
+
+
+    2004
+    '''
 
     return
 

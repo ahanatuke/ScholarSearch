@@ -38,6 +38,8 @@ def listVenues(collection, db):
 
     return
 
+    # TODO print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'], ",", allMatching[i]['venue'])
+
 
 
 

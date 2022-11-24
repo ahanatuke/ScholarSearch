@@ -21,9 +21,10 @@ def searchArticles(collection):
             print("No matches found.")
             return
         else:
-            for i in range(len(allMatching)):
-                print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'],
-                      ",", allMatching[i]['venue'])  # TODO format better  current: 0: 637feeb5b7034047a56b3d04 , A Self-Stabilizing Algorithm for Finding the Cutting Center of a Tree. , 2003 , parallel and distributed processing techniques and applications
+            for i in range(1, len(allMatching) + 1):
+                print(f"{i}: {allMatching[i].get('_id', '-')}, {allMatching[i].get('title', '-')}, {allMatching[i]('year', '-')}, {allMatching[i].get('venue', '-')}")
+                # print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'],
+                #       ",", allMatching[i]['venue'])  # TODO DONE  current: 0: 637feeb5b7034047a56b3d04 , A Self-Stabilizing Algorithm for Finding the Cutting Center of a Tree. , 2003 , parallel and distributed processing techniques and applications
             match = True
 
     check = True
@@ -62,7 +63,8 @@ def searchArticles(collection):
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
                 field = "Authors"
-                print(field + ':', article["authors"])  # TODO format better  current: Authors: ['Pranay Chaudhuri', 'Hussein Thompson']
+                print(field + ': ' + ', '.join(article["authors"]))
+                # print(field + ':', article["authors"])  # TODO format better  current: Authors: ['Pranay Chaudhuri', 'Hussein Thompson'] DONE
             except Exception as e:
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
@@ -87,9 +89,9 @@ def searchArticles(collection):
                     {"_id": 1, "title": 1, "year": 1}
                 )
                 results = list(results)
-                print(results)  # TODO get rid of?
-                for item in results:
-                    print(field + ':', item)  # TODO format better  current: []
+                print(field + ': ' + ', '.join(results))
+                # for item in results:
+                #    print(field + ':', *item)  # TODO format better  current: [] DONE
             except Exception as e:
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
 

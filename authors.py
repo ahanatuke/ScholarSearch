@@ -37,9 +37,9 @@ def searchAuthors(collection):
     if len(results) == 0:
         print("No matches found.")
         return
-    i = 0
+    i = 1
     for item in results:
-        print(str(i) + ":", item)  # TODO format better  current: 0: {'_id': 'Jovan Dj. Golic', 'publications': 1}
+        print(f"{i}: {item['_id']}, publications: {item['publications']}")  # TODO current: 0: {'_id': 'Jovan Dj. Golic', 'publications': 1} DONE
         i += 1
 
     print("Please select from 0 -", len(results) - 1, "and select an author to look for.\nHit ENTER to leave\nHit E to exit")
@@ -84,11 +84,11 @@ def searchAuthors(collection):
     ])
     results = list(results)
 
-    for item in results:  # TODO format better
-        print(item.get("title", ""))
-        print(item.get("venue", ""))
-        print(item.get("abstract", ""))
-        print(item.get("year", ""))
+    for item in results:  # TODO DONE
+        print(item.get("title", "No title available"))
+        print(item.get("venue", "No venue available"))
+        print(item.get("abstract", "No abstract available"))
+        print(item.get("year", "No year available"))
     ''' current
     Vectorial fast correlation attacks.
 

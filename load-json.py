@@ -23,19 +23,17 @@ def init_db(jsonFile, portNum):
     # If the collection exists, your program should drop it and create a new collection
     collectionsList = db.list_collection_names()  # Return a list of collections in '291db'
 
-    if 'dblp' in collectionsList:
-        col = db['dblp']
-        col.drop()
+
+    db.dblp.drop()
 
     collection = db['dblp']
-
-
-
 
     #jsonFile = "./"+jsonFile #note program assumes .py files and file is in same directory, also ENTER EXTENSION
     importCmd = "mongoimport --db 291db --collection dblp --type=json --file " + jsonFile
 
     os.system(importCmd)
+
+
 
     collection.update_many(
         {"year":
@@ -56,18 +54,18 @@ def init_db(jsonFile, portNum):
         ]
 
     )
+    collection.create_index([('references', 1)])
+    collection.create_index([('venues', 1)])
 
+
+    db.drop_collection('venues')
     collection.aggregate([
-        {"$match": {"_id": {"ne": ''} } },
-        {"$lookup":  {"from": "dblp",
-                      "localField": "id",
-                      "foreignField": "references",
-                      "as": "ref"}},
+        {'$lookup': {"from": "dblp","localField": "id","foreignField": "references","as": "ref"}},
         {"$unwind": "$ref"},
-        {"$group": {"_id": "$venue",
-                    "venueIDRef": {"$addToSet": "$ref.id"}}},
+        {"$group": {"_id": "$venue","venueIDRef": {"$addToSet": "$ref.id"}}},
+        {"$match":{"_id": {"$ne": ''}}},
         {"$project": {"_id": 1, "n_references": {"$size": "$venueIDRef"}}},
         {"$out": "venues"}
 
     ])
-    return collection
+    return collection, db

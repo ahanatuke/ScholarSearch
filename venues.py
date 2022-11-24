@@ -1,6 +1,10 @@
+import pymongo
+from pymongo import MongoClient
+import json
+import itertools
+import os
 
-
-def listVenues(collection):
+def listVenues(collection, db):
     print("Enter the amount of top venues you would like to see\nHit ENTER to go back to the mainpage\nHit E to exit the program")
     uI = input("> ")
     check = True
@@ -19,11 +23,13 @@ def listVenues(collection):
             uI = input("> ")
 
     # TODO The user should be able to enter a number n and see a listing of top n venues
-    result = collection.aggregate([
+    a = db['venues']
+    result = a.aggregate([
      {"$sort": {"n_references": -1}},
      {"$limit": intuI},
     ])
     result = list(result)
+    print(result)
     for item in result:
         print(item)
     return

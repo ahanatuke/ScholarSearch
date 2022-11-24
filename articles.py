@@ -28,24 +28,7 @@ def searchArticles(collection):
         results = collection.find(
             {"$text": {"$search": uiStr, "$caseSensitive": False}}
         )
-        '''results = collection.aggregate([
-            {'$match' : {'$or':
-                [
-                {"title": {'$regex' : uiStr, '$options' : 'i'}},
-                {"authors": {'$regex' : uiStr, '$options' : 'i'}},
-                {"abstract": {'$regex' : uiStr, '$options' : 'i'}},
-                {"venue": {'$regex' : uiStr, '$options' : 'i'}},
-                {"year": {'$regex' : uiStr, '$options' : 'i'}} ]
-             }
-            },
-            {'$project':
-                 {
-                    "title": 1,
-                    "year": 1,
-                    "venue": 1
-                  }
-             }
-        ])'''
+
         allMatching = list(results)
 
         # TODO For each matching article, display the id, the title, the year and the venue fields

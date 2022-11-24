@@ -1,6 +1,4 @@
 def searchArticles(collection):
-    print("Please enter in a keyword to search for authors."
-          "\nHit ENTER to return back to the main page.")
 
     match = False
     while not match:
@@ -21,9 +19,14 @@ def searchArticles(collection):
             print("No matches found.")
             return
         else:
-            for i in range(len(allMatching)):
-                print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'],
-                      ",", allMatching[i]['venue'])
+            i = 1
+            for item in allMatching:  # TODO will print blank space instead of '-'
+                print(f"{i}: {item.get('_id', '-')}, {item.get('title', '-')}, {item.get('year', '-')}, {item.get('venue', '-')}")
+                i += 1
+            # for i in range(len(allMatching)):
+            #     print(f"{i}: {allMatching[i].get('_id', '-')}, {allMatching[i].get('title', '-')}, {allMatching[i].get('year', '-')}, {allMatching[i].get('venue', '-')}")
+                # print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'],
+                #       ",", allMatching[i]['venue'])
             match = True
 
     check = True
@@ -39,7 +42,7 @@ def searchArticles(collection):
             print("Exiting program...\nGoodbye.")
             exit()
         try:
-            intuI = int(uI)
+            intuI = int(uI) - 1
             if intuI < 0:
                 raise
             if intuI >= len(allMatching):
@@ -62,7 +65,8 @@ def searchArticles(collection):
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
                 field = "Authors"
-                print(field + ':', article["authors"])
+                print(field + ': ' + ', '.join(article["authors"]))
+                # print(field + ':', article["authors"])  # TODO format better  current: Authors: ['Pranay Chaudhuri', 'Hussein Thompson'] DONE
             except Exception as e:
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
@@ -81,15 +85,15 @@ def searchArticles(collection):
             except Exception as e:
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
-                field = "Referenced in: "
+                field = "Referenced in"
                 results = collection.find(
                     {"references": article["_id"]},
                     {"_id": 1, "title": 1, "year": 1}
                 )
                 results = list(results)
-                print(results)
-                for item in results:
-                    print(field + ':', item)
+                print(field + ': ' + ', '.join(results))
+                # for item in results:
+                #    print(field + ':', *item)  # TODO format better  current: [] DONE
             except Exception as e:
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
 
@@ -117,23 +121,23 @@ def addArticle(collection):
         else:
             check = False
     check = True
-    titleInput = input("Add a title\nHit ENTER to exit\n>").lower().strip()
+    titleInput = input("Add a title\nHit ENTER to exit\n> ").lower().strip()
     if titleInput == '':
         return
-    authorsInput = input("Add the list of authors using spaces only\nHit ENTER to exit\n>").lower().split()
+    authorsInput = input("Add the list of authors using spaces only\nHit ENTER to exit\n> ").lower().split()
 
     if len(authorsInput) < 1:
         return
 
     check = True
-    yearInput = input("Add the year for the article\n>").lower().strip()
+    yearInput = input("Add the year for the article\n> ").lower().strip()
     while check:
         try:
             yearInt = int(yearInput)
             check = False
         except:
             print("The year added is invalid, please try again.")
-            yearInput = input("Add the year for the article\n>").lower().strip()
+            yearInput = input("Add the year for the article\n> ").lower().strip()
 
     newArticle = {"id": idInput,
                   "title": titleInput,
@@ -145,5 +149,11 @@ def addArticle(collection):
                   "abstract": abstract
                   }
     collection.insert_one(newArticle)
+
+    print(f"New article successfully added:\n"
+          f"Id: {idInput}\n"
+          f"Title: {titleInput}\n"
+          f"Authors: {', '.join(authorsInput)}\n"
+          f"Year: {yearInput}")
 
     return

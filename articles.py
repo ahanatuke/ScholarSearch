@@ -9,35 +9,39 @@ def searchArticles(collection):
         uI = input("> ")
         if uI == '':
             return
-        uI = uI.lower().split()
+        uI = uI.lower().split(' ')
         allMatching = []
         # mongoDB here
         # TODO retrieve all articles that match all those keywords (AND semantics)
         '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
         be case-insensitive) '''
-
+        uiStr = ''
+        for elem in uI:
+            uiStr += elem + '|'
+        #uI = 'algorithm'
         # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
         # TODO fix this query
         # get one and add it into all matching
-        for i in range(len(uI)):
-            results = collection.aggregate([
-                {'$or': [
-                    {"title": uI[i]},
-                    {"authors": uI[i]},
-                    {"abstract": uI[i]},
-                    {"venue": uI[i]},
-                    {"year": uI[i]}
-                    ]
-                 },
-                {'$project':
-                     {
-                        "title": 1,
-                        "year": 1,
-                        "venue": 1
-                      }
-                 }
-            ])
-            allMatching.append(results)
+        #for i in range(len(uI)):
+        results = collection.aggregate([
+            {'$match' : {'$or':
+                [
+                {"title": {'$regex' : uiStr, '$options' : 'i'}},
+                {"authors": {'$regex' : uiStr, '$options' : 'i'}},
+                {"abstract": {'$regex' : uiStr, '$options' : 'i'}},
+                {"venue": {'$regex' : uiStr, '$options' : 'i'}},
+                {"year": {'$regex' : uiStr, '$options' : 'i'}} ]
+             }
+            },
+            {'$project':
+                 {
+                    "title": 1,
+                    "year": 1,
+                    "venue": 1
+                  }
+             }
+        ])
+        allMatching.append(list(results))
 
         # TODO For each matching article, display the id, the title, the year and the venue fields
 

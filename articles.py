@@ -20,7 +20,7 @@ def searchArticles(collection):
         # TODO fix this query
         # get one and add it into all matching
         for i in range(len(uI)):
-            results = collection.find_one([
+            results = collection.aggregate([
                 {'$or': [
                     {"title": uI[i]},
                     {"authors": uI[i]},
@@ -57,13 +57,14 @@ def searchArticles(collection):
 
     print("Select a number corresponding to an article to see the details:")
     selected = int(input('> '))
-
-    result = collection.find([
-        {skip(selected - 1).limit(1)}
-    ])
-
-    for item in result:
-        print(item)
+    # TODO fix query
+    # result = collection.find([
+    #     {"__id" : selected}
+    # ]).skip(selected - 1).limit(1)
+    #
+    # result = list(result)
+    # for item in result:
+    #     print(item)
 
     # TODO print the specific list and get the year of every reference
     uI = input("Please select a number from 0 -", len(allMatching) - 1, "to select an article.\nHit enter to leave\nE to exit")
@@ -144,7 +145,7 @@ def addArticle(collection):
 
     # TODO The fields abstract and venue should be set to null, references should be set to an empty array and
     #  n_citations should be set to zero
-
+    # TODO test query
     collection.update_many(
         {"abstract": ""},  # set to NULL
         {"venue": ""},  # set to NULL

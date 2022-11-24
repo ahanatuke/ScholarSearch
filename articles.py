@@ -117,7 +117,7 @@ def addArticle(collection):
         if idInput == '':
             return
 
-        result = collection.find(
+        result = collection.find_one(
             {"id": idInput}
         )
 
@@ -156,13 +156,10 @@ def addArticle(collection):
                   "references": references,
                   "abstract": abstract
                   }
-    collection.insertOne(newArticle)
+    collection.insert_one(newArticle)
 
     # TODO The fields abstract and venue should be set to null, references should be set to an empty array and
     #  n_citations should be set to zero
     # TODO test query
-    collection.insertOne(
-        {"abstract": None, "venue": None, "reference": [], "n_citations": 0},
-    )
 
     return

@@ -6,7 +6,7 @@ import os
 
 def init_db(jsonFile, portNum):
     # TODO remove hard codes before submission
-    portNum = 'mongodb://localhost:27017/'
+    #portNum = 'mongodb://localhost:27017/'
     #jsonFile = 'db.json'
     connection = MongoClient(portNum)
     # connect to the server and will create a database named 291db
@@ -57,7 +57,7 @@ def init_db(jsonFile, portNum):
 
     )
 
-    '''collection.aggregate([
+    collection.aggregate([
         {"$match": {"_id": {"ne": ''} } },
         {"$lookup":  {"from": "dblp",
                       "localField": "id",
@@ -69,5 +69,5 @@ def init_db(jsonFile, portNum):
         {"$project": {"_id": 1, "n_references": {"$size": "$venueIDRef"}}},
         {"$out": "venues"}
 
-    ])'''
+    ])
     return collection

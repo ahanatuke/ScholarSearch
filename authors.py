@@ -18,7 +18,7 @@ def searchAuthors(collection):
 
     results = collection.aggregate([
         {"$match": {
-                "$text":
+            "$text":
                 {
                     "$search": "/"+uI+"/i",
                     "$caseSensitive": False
@@ -62,23 +62,36 @@ def searchAuthors(collection):
         except:
             print("Invalid input, please try again.")
 
-    author = results[uI][0]
+    author = results[intuI]["_id"]
     # TODO The user should be able to select an author and see the title, year and venue of all articles by that author
     '''The result should be sorted based on year with more recent articles shown first '''
 
     #get all of stuff that matches the authors name, group by year, and sort by year descending
     #see if it works and find a way to display title, year and venue only
-    collection.aggregate([
-        {"$match":
-             {"authors": author}
-         },
-        {"$group":
-             { "_id": "year" }
+    results = collection.aggregate([
+        {"$match":{
+            "$text": {
+                "$search": "/" + author + "/i",
+                "$caseSensitive": False
+            }}
         },
+        {"$match":
+             {"authors": {"$regex": "\\b"+author+"\\b", "$options": 'i'},
+
+              }
+         },
+
         {"$sort":
-            {"year", -1}
+             {"year": -1}
          }
 
     ])
+    results = list(results)
+    for item in results:
+        print(item.get("title", ""))
+        print(item.get("venue", ""))
+        print(item.get("abstract", ""))
+        print(item.get("year", ""))
+
 
     return

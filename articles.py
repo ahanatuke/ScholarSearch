@@ -7,7 +7,7 @@ def searchArticles(collection):
     if uI == '':
         return
     uI = uI.lower().split()
-    allMatching = ()
+    allMatching = []
     # mongoDB here
     # TODO retrieve all articles that match all those keywords (AND semantics)
     '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
@@ -34,7 +34,7 @@ def searchArticles(collection):
                   }
              }
         ])
-        allMatching += results
+        allMatching.append(results)
 
     # TODO For each matching article, display the id, the title, the year and the venue fields
 

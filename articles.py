@@ -9,13 +9,16 @@ def searchArticles(collection):
         uI = input("> ")
         if uI == '':
             return
-        uI = uI.lower().split()
+        uI = uI.lower().split(' ')
         allMatching = []
         # mongoDB here
         # TODO retrieve all articles that match all those keywords (AND semantics)
         '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
         be case-insensitive) '''
-        uI = 'algorithm'
+        uiStr = ''
+        for elem in uI:
+            uiStr += elem + '|'
+        #uI = 'algorithm'
         # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
         # TODO fix this query
         # get one and add it into all matching
@@ -23,11 +26,11 @@ def searchArticles(collection):
         results = collection.aggregate([
             {'$match' : {'$or':
                 [
-                {"title": {'$regex' : uI, '$options' : 'i'}},
-                {"authors": {'$regex' : uI, '$options' : 'i'}},
-                {"abstract": {'$regex' : uI, '$options' : 'i'}},
-                {"venue": {'$regex' : uI, '$options' : 'i'}},
-                {"year": {'$regex' : uI, '$options' : 'i'}} ]
+                {"title": {'$regex' : uiStr, '$options' : 'i'}},
+                {"authors": {'$regex' : uiStr, '$options' : 'i'}},
+                {"abstract": {'$regex' : uiStr, '$options' : 'i'}},
+                {"venue": {'$regex' : uiStr, '$options' : 'i'}},
+                {"year": {'$regex' : uiStr, '$options' : 'i'}} ]
              }
             },
             {'$project':
@@ -38,7 +41,7 @@ def searchArticles(collection):
                   }
              }
         ])
-        allMatching.append(results)
+        allMatching.append(list(results))
 
         # TODO For each matching article, display the id, the title, the year and the venue fields
 

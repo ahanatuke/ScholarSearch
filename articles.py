@@ -3,7 +3,7 @@ from math import floor
 
 def searchArticles(collection):
     print("Please enter in a keyword to search for authors."
-          "\nHit ENTER to return back to the mainpage.")
+          "\nHit ENTER to return back to the main page.")
 
     match = False
     while not match:
@@ -12,28 +12,13 @@ def searchArticles(collection):
         if uI == '':
             return
         uI = uI.lower().split(' ')
-        # allMatching = []
-        # mongoDB here
-        # TODO DONE retrieve all articles that match all those keywords (AND semantics)
-
-        '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
-        be case-insensitive) '''
-
         uiStr = '|'.join(uI)
 
-        # uiStr = 'algorithm|object'
-
-        # get one and add it into all matching
-        # for i in range(len(uI)):
         results = collection.find(
             {"$text": {"$search": uiStr, "$caseSensitive": False}}
         )
-
         allMatching = list(results)
 
-        # TODO For each matching article, display the id, the title, the year and the venue fields
-
-        # if mongoDB returns an entire column we can simply display the parts we want to show for now
         if len(allMatching) == 0:
             print("No results found.")
             return
@@ -43,12 +28,6 @@ def searchArticles(collection):
                       ",", allMatching[i]['venue'])
             match = True
 
-    # TODO Select an article to see all fields including the abstract and authors in addition to the fields shown before
-
-    '''If the article is referenced by other articles, the id, the title, and the year of those references should be 
-    also listed '''
-
-    # TODO fix query
     check = True
     while check:
         valid = False
@@ -113,12 +92,6 @@ def searchArticles(collection):
                     print(field + ':', item)
             except Exception as e:
                 print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
-    # result = collection.find([
-    #     {"__id" : selected}
-    # ]).skip(selected - 1).limit(1)
-    #
-    # i = selected
-    # print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'], ",", allMatching[i]['venue'])
 
     return
 
@@ -162,7 +135,7 @@ def addArticle(collection):
             print("The year added is invalid, please try again.")
             yearInput = input("Add the year for the article\n>").lower().strip()
 
-    # TODO Add an article to the collection by providing a unique id, a title, a list of authors, and a year
+
     newArticle = {"id": idInput,
                   "title": titleInput,
                   "authors": authorsInput,
@@ -173,9 +146,5 @@ def addArticle(collection):
                   "abstract": abstract
                   }
     collection.insert_one(newArticle)
-
-    # TODO The fields abstract and venue should be set to null, references should be set to an empty array and
-    #  n_citations should be set to zero
-    # TODO test query
 
     return

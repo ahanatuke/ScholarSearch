@@ -5,7 +5,8 @@ import itertools
 import os
 
 def listVenues(collection, db):
-    print("Enter the amount of top venues you would like to see\nHit ENTER to go back to the main page\nHit E to exit the program")
+    print("Enter the amount of top venues you would like to see\n"
+          "Hit ENTER to go back to the main page\nHit E to exit the program")
     uI = input("> ")
     check = True
     while check:

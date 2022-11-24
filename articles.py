@@ -15,7 +15,7 @@ def searchArticles(collection):
         # TODO retrieve all articles that match all those keywords (AND semantics)
         '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
         be case-insensitive) '''
-
+        uI = 'algorithm'
         # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
         # TODO fix this query
         # get one and add it into all matching

@@ -5,7 +5,8 @@ import itertools
 import os
 
 def listVenues(collection, db):
-    print("Enter the amount of top venues you would like to see\nHit ENTER to go back to the mainpage\nHit E to exit the program")
+    print("Enter the amount of top venues you would like to see\n"
+          "Hit ENTER to go back to the main page\nHit E to exit the program")
     uI = input("> ")
     check = True
     while check:
@@ -19,19 +20,22 @@ def listVenues(collection, db):
             check = False
         except:
             print("The input is not a number, please try again\nEnter the amount of top venues you would like to see"
-                  "\nHit ENTER to go back to the mainpage\nHit E to exit the program")
+                  "\nHit ENTER to go back to the main page\nHit E to exit the program")
             uI = input("> ")
 
-    # TODO The user should be able to enter a number n and see a listing of top n venues
     a = db['venues']
+
     result = a.aggregate([
      {"$sort": {"n_references": -1}},
      {"$limit": intuI},
     ])
     result = list(result)
+
     print(result)
+
     for item in result:
         print(item)
+
     return
 
 

@@ -98,7 +98,28 @@ def searchArticles(collection):
     # i = selected
     print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'], ",", allMatching[i]['venue'])
 
-
+    # while loop:
+    #     user_input = input("Choose an article by entering their index no. or enter 'q' to quit: ")
+    #
+    #     if user_input == 'q':
+    #         loop = False
+    #         return 0
+    #     elif user_input.isdigit() == False:
+    #         print('Invalid option')
+    #         continue
+    #
+    #     elif if its valid userinput:
+    #         print([int(user_input) - 1]['title']))
+    #
+    #         try:
+    #             print('Title': results[int(user_input) - 1]['title']))
+    #             except KeyError:
+    #             print('Title: None')
+    #
+    #         try:
+    #             print('Authors': results[int(user_input) - 1]['authors']))
+    #             except KeyError:
+    #             print('Authors: None')
 
 
     return

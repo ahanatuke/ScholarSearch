@@ -40,7 +40,7 @@ def searchAuthors(collection):
     i = 0
     for item in results:
         print(str(i) + ":", item)
-        i+=1
+        i += 1
 
     print("Please select from 0 -", len(results) - 1, "and select an author to look for.\nHit ENTER to leave\nE to exit")
 

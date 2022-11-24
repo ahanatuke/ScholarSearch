@@ -5,26 +5,15 @@ import itertools
 import os
 
 def init_db(jsonFile, portNum):
-    # TODO remove hard codes before submission
     #portNum = 'mongodb://localhost:27017/'
     #jsonFile = 'db.json'
     connection = MongoClient(portNum)
-    # connect to the server and will create a database named 291db
-    # implemented in such a way that if it *is* in list_db_names, it just connects to that one, checks for dblp, if it exists, it drops it
-    # I don't need to explain this all to you guys you're smart
-    # dbNames = connection.list_database_names()
-
-    # afai can tell, there's no real difference between handling for 291db existing vs handling for it *not* existing,
-    # might be worth removing this, but also I am real loopy
-    # if '291db' not in dbNames:  # TODO might not need this
 
     db = connection['291db']
 
-    # If the collection exists, your program should drop it and create a new collection
-    collectionsList = db.list_collection_names()  # Return a list of collections in '291db'
-
-
-    db.dblp.drop()
+    collectionsList = db.list_collection_names()
+    if 'dblp' in collectionsList:
+        db.dblp.drop()
 
     collection = db['dblp']
 
@@ -32,7 +21,6 @@ def init_db(jsonFile, portNum):
     importCmd = "mongoimport --db 291db --collection dblp --type=json --file " + jsonFile
 
     os.system(importCmd)
-
 
 
     collection.update_many(
@@ -68,4 +56,5 @@ def init_db(jsonFile, portNum):
         {"$out": "venues"}
 
     ])
+
     return collection, db

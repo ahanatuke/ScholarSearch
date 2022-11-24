@@ -35,14 +35,14 @@ def searchAuthors(collection):
     results = list(results)
 
     if len(results) == 0:
-        print("No matches.")
+        print("No matches found.")
         return
     i = 0
     for item in results:
         print(str(i) + ":", item)
         i += 1
 
-    print("Please select from 0 -", len(results) - 1, "and select an author to look for.\nHit ENTER to leave\nE to exit")
+    print("Please select from 0 -", len(results) - 1, "and select an author to look for.\nHit ENTER to leave\nHit E to exit")
 
     check = True
     while check:

@@ -1,11 +1,11 @@
-
 def searchArticles(collection):
     print("Please enter in a keyword to search for authors."
           "\nHit ENTER to return back to the main page.")
 
     match = False
     while not match:
-        print("Please enter in keywords for articles using spaces only.\nHit enter to go back to the main page.")
+        print("Please enter in keywords for articles using spaces only."
+              "\nHit enter to go back to the main page.")
         uI = input("> ")
         if uI == '':
             return
@@ -18,7 +18,7 @@ def searchArticles(collection):
         allMatching = list(results)
 
         if len(allMatching) == 0:
-            print("No results found.")
+            print("No matches found.")
             return
         else:
             for i in range(len(allMatching)):
@@ -29,7 +29,9 @@ def searchArticles(collection):
     check = True
     while check:
         valid = False
-        print("Select a number corresponding to an article to see the details:\nHit ENTER to go back to the main page\nHit E to exit ")
+        print(
+            "Select a number corresponding to an article to see the details:\n"
+            "Hit ENTER to go back to the main page\nHit E to exit ")
         uI = input("> ").lower().strip()
         if uI == '':
             return
@@ -50,34 +52,34 @@ def searchArticles(collection):
             article = allMatching[intuI]
             try:
                 field = "ID"
-                print(field+':', article["_id"])
+                print(field + ':', article["_id"])
             except Exception as e:
-                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+                print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
                 field = "Title"
-                print(field+':', article["title"])
+                print(field + ':', article["title"])
             except Exception as e:
-                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+                print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
                 field = "Authors"
-                print(field+':', article["authors"])
+                print(field + ':', article["authors"])
             except Exception as e:
-                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+                print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
                 field = "Year"
-                print(field+':', article["year"])
+                print(field + ':', article["year"])
             except Exception as e:
-                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+                print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
                 field = "Venue"
-                print(field+':', article["venue"])
+                print(field + ':', article["venue"])
             except Exception as e:
-                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+                print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
                 field = "n_citation"
-                print(field+':', article["n_citation"])
+                print(field + ':', article["n_citation"])
             except Exception as e:
-                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+                print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
             try:
                 field = "Referenced in: "
                 results = collection.find(
@@ -132,7 +134,6 @@ def addArticle(collection):
         except:
             print("The year added is invalid, please try again.")
             yearInput = input("Add the year for the article\n>").lower().strip()
-
 
     newArticle = {"id": idInput,
                   "title": titleInput,

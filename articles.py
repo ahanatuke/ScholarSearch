@@ -5,7 +5,6 @@ def searchArticles(collection):
     print("Please enter in a keyword to search for authors."
           "\nHit ENTER to return back to the mainpage.")
 
-
     match = False
     while not match:
         print("Please enter in keywords for articles using spaces only.\nHit enter to go back to the main page.")
@@ -13,96 +12,115 @@ def searchArticles(collection):
         if uI == '':
             return
         uI = uI.lower().split(' ')
-        #allMatching = []
+        # allMatching = []
         # mongoDB here
         # TODO DONE retrieve all articles that match all those keywords (AND semantics)
-
 
         '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
         be case-insensitive) '''
 
         uiStr = '|'.join(uI)
 
-        #uiStr = 'algorithm|object'
+        # uiStr = 'algorithm|object'
 
         # get one and add it into all matching
-        #for i in range(len(uI)):
-        results = collection.aggregate([
-            {'$match' : {'$or':
-                [
-                {"title": {'$regex' : uiStr, '$options' : 'i'}},
-                {"authors": {'$regex' : uiStr, '$options' : 'i'}},
-                {"abstract": {'$regex' : uiStr, '$options' : 'i'}},
-                {"venue": {'$regex' : uiStr, '$options' : 'i'}},
-                {"year": {'$regex' : uiStr, '$options' : 'i'}} ]
-             }
-            },
-            {'$project':
-                 {
-                    "title": 1,
-                    "year": 1,
-                    "venue": 1
-                  }
-             }
-        ])
+        # for i in range(len(uI)):
+        results = collection.find(
+            {"$text": {"$search": uiStr, "$caseSensitive": False}}
+        )
+
         allMatching = list(results)
 
         # TODO For each matching article, display the id, the title, the year and the venue fields
 
         # if mongoDB returns an entire column we can simply display the parts we want to show for now
-        if allMatching[0] is None:
+        if len(allMatching) == 0:
             print("No results found.")
+            return
         else:
             for i in range(len(allMatching)):
-                print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'], ",", allMatching[i]['venue'])
+                print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'],
+                      ",", allMatching[i]['venue'])
             match = True
-
 
     # TODO Select an article to see all fields including the abstract and authors in addition to the fields shown before
 
     '''If the article is referenced by other articles, the id, the title, and the year of those references should be 
     also listed '''
 
-    print("Select a number corresponding to an article to see the details:\nHit ENTER to go back to the main page\nHit E to exit ")
     # TODO fix query
     check = True
     while check:
+        valid = False
+        print("Select a number corresponding to an article to see the details:\nHit ENTER to go back to the main page\nHit E to exit ")
         uI = input("> ").lower().strip()
         if uI == '':
             return
-        elif uI == 'e':
+        if uI == 'e':
             print("Exiting program...\nGoodbye.")
             exit()
         try:
             intuI = int(uI)
             if intuI < 0:
-                raise Exception
-            if intuI >= len(results):
-                raise Exception
-            check = False
+                raise
+            if intuI >= len(allMatching):
+                raise
+            valid = True
         except:
             print("Invalid input, please try again.")
 
-    allMatching[intuI]["_id"]
-    result = collection.aggregate([
-        {"$match":
-             {"$text": {
-                 "$search": "/"
-             }}
-         }
-    ])
+        if valid:
+            article = allMatching[intuI]
+            try:
+                field = "ID"
+                print(field+':', article["_id"])
+            except Exception as e:
+                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+            try:
+                field = "Title"
+                print(field+':', article["title"])
+            except Exception as e:
+                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+            try:
+                field = "Authors"
+                print(field+':', article["authors"])
+            except Exception as e:
+                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+            try:
+                field = "Year"
+                print(field+':', article["year"])
+            except Exception as e:
+                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+            try:
+                field = "Venue"
+                print(field+':', article["venue"])
+            except Exception as e:
+                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+            try:
+                field = "n_citation"
+                print(field+':', article["n_citation"])
+            except Exception as e:
+                print("Error: "+field.lower()+" cannot be found\n"+field+": N/A")
+            try:
+                field = "Referenced in: "
+                results = collection.find(
+                    {"references": article["_id"]},
+                    {"_id": 1, "title": 1, "year": 1}
+                )
+                results = list(results)
+                print(results)
+                for item in results:
+                    print(field + ':', item)
+            except Exception as e:
+                print("Error: " + field.lower() + " cannot be found\n" + field + ": N/A")
     # result = collection.find([
     #     {"__id" : selected}
     # ]).skip(selected - 1).limit(1)
     #
     # i = selected
-    print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'], ",", allMatching[i]['venue'])
-
-
-
+    # print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'], ",", allMatching[i]['venue'])
 
     return
-
 
 
 def addArticle(collection):
@@ -126,15 +144,13 @@ def addArticle(collection):
         else:
             check = False
     check = True
-    titleInput = input("Add a title\n>").lower().strip()
-    authorsInput = input("Add the list of authors using spaces only\n>").lower().split()
+    titleInput = input("Add a title\nHit ENTER to exit\n>").lower().strip()
+    if titleInput == '':
+        return
+    authorsInput = input("Add the list of authors using spaces only\nHit ENTER to exit\n>").lower().split()
 
-    while check:
-        if len(authorsInput) < 1:
-            print("Please include at least one author.")
-            input("Add the list of authors using spaces only\n>").lower().split()
-        else:
-            check = False
+    if len(authorsInput) < 1:
+        return
 
     check = True
     yearInput = input("Add the year for the article\n>").lower().strip()
@@ -143,14 +159,14 @@ def addArticle(collection):
             yearInt = int(yearInput)
             check = False
         except:
-            print("The year added is not a valid year, please try again.")
-            year = input("Add the year for the article\n>").lower().strip()
+            print("The year added is invalid, please try again.")
+            yearInput = input("Add the year for the article\n>").lower().strip()
 
     # TODO Add an article to the collection by providing a unique id, a title, a list of authors, and a year
     newArticle = {"id": idInput,
                   "title": titleInput,
                   "authors": authorsInput,
-                  "year": yearInt,
+                  "year": yearInput,
                   "venue": venue,
                   "n_citation": n_citations,
                   "references": references,

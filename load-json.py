@@ -6,8 +6,8 @@ import os
 
 def init_db(jsonFile, portNum):
     # TODO remove hard codes before submission
-    portNum = 'mongodb://localhost:27017/'
-    jsonFile = 'db.json'
+    #portNum = 'mongodb://localhost:27017/'
+    #jsonFile = 'db.json'
     connection = MongoClient(portNum)
     # connect to the server and will create a database named 291db
     # implemented in such a way that if it *is* in list_db_names, it just connects to that one, checks for dblp, if it exists, it drops it
@@ -23,17 +23,17 @@ def init_db(jsonFile, portNum):
     # If the collection exists, your program should drop it and create a new collection
     collectionsList = db.list_collection_names()  # Return a list of collections in '291db'
 
-    if 'dblp' in collectionsList:
-        col = db['dblp']
-        col.drop()
+
+    db.dblp.drop()
 
     collection = db['dblp']
-
 
     #jsonFile = "./"+jsonFile #note program assumes .py files and file is in same directory, also ENTER EXTENSION
     importCmd = "mongoimport --db 291db --collection dblp --type=json --file " + jsonFile
 
     os.system(importCmd)
+
+
 
     collection.update_many(
         {"year":
@@ -54,4 +54,18 @@ def init_db(jsonFile, portNum):
         ]
 
     )
-    return collection
+    collection.create_index([('references', 1)])
+    collection.create_index([('venues', 1)])
+
+
+    db.drop_collection('venues')
+    collection.aggregate([
+        {'$lookup': {"from": "dblp","localField": "id","foreignField": "references","as": "ref"}},
+        {"$unwind": "$ref"},
+        {"$group": {"_id": "$venue","venueIDRef": {"$addToSet": "$ref.id"}}},
+        {"$match":{"_id": {"$ne": ''}}},
+        {"$project": {"_id": 1, "n_references": {"$size": "$venueIDRef"}}},
+        {"$out": "venues"}
+
+    ])
+    return collection, db

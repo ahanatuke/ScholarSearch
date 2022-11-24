@@ -2,6 +2,9 @@ from math import floor
 
 
 def searchArticles(collection):
+    print("Please enter in a keyword to search for authors."
+          "\nHit ENTER to return back to the mainpage.")
+
 
     match = False
     while not match:
@@ -13,13 +16,14 @@ def searchArticles(collection):
         #allMatching = []
         # mongoDB here
         # TODO DONE retrieve all articles that match all those keywords (AND semantics)
+
+
         '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
         be case-insensitive) '''
 
         uiStr = '|'.join(uI)
 
-        uiStr = 'algorithm|object'
-        # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
+        #uiStr = 'algorithm|object'
 
         # get one and add it into all matching
         #for i in range(len(uI)):
@@ -59,40 +63,46 @@ def searchArticles(collection):
     '''If the article is referenced by other articles, the id, the title, and the year of those references should be 
     also listed '''
 
-    print("Select a number corresponding to an article to see the details:")
-    selected = int(input('> '))
+    print("Select a number corresponding to an article to see the details:\nHit ENTER to go back to the main page\nHit E to exit ")
     # TODO fix query
-
-    # result = collection.find([
-    #     {"__id" : selected}
-    # ]).skip(selected - 1).limit(1)
-    #
-    # i = selected
-    # print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'], ",", allMatching[i]['venue'])
-
-
-    # TODO print the specific list and get the year of every reference
-    uI = input("Please select a number from 0 -", len(allMatching) - 1, "to select an article.\nHit enter to leave\nE to exit")
     check = True
     while check:
+        uI = input("> ").lower().strip()
+        if uI == '':
+            return
+        elif uI == 'e':
+            print("Exiting program...\nGoodbye.")
+            exit()
         try:
-            if uI == '':
-                return
-            elif uI == 'E':
-                print("Exiting program...\nGoodbye.")
-                exit()
             intuI = int(uI)
             if intuI < 0:
                 raise Exception
-            if intuI >= len(allMatching):
+            if intuI >= len(results):
                 raise Exception
             check = False
         except:
             print("Invalid input, please try again.")
 
+    allMatching[intuI]["_id"]
+    result = collection.aggregate([
+        {"$match":
+             {"$text": {
+                 "$search": "/"
+             }}
+         }
+    ])
+    # result = collection.find([
+    #     {"__id" : selected}
+    # ]).skip(selected - 1).limit(1)
+    #
+    # i = selected
+    print(str(i) + ':', allMatching[i]['_id'], ",", allMatching[i]['title'], ",", allMatching[i]['year'], ",", allMatching[i]['venue'])
+
+
 
 
     return
+
 
 
 def addArticle(collection):

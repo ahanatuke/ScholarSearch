@@ -17,7 +17,7 @@ def searchArticles(collection):
         be case-insensitive) '''
 
         # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
-
+        # TODO fix this query
         # get one and add it into all matching
         for i in range(len(uI)):
             results = collection.find_one([
@@ -41,7 +41,7 @@ def searchArticles(collection):
 
         # TODO For each matching article, display the id, the title, the year and the venue fields
 
-        # if mongoDB returns an entire column we an simply display the parts we want to show for now
+        # if mongoDB returns an entire column we can simply display the parts we want to show for now
         if allMatching[0] is None:
             print("No results found.")
         else:
@@ -54,6 +54,16 @@ def searchArticles(collection):
 
     '''If the article is referenced by other articles, the id, the title, and the year of those references should be 
     also listed '''
+
+    print("Select a number corresponding to an article to see the details:")
+    selected = int(input('> '))
+
+    result = collection.find([
+        {skip(selected - 1).limit(1)}
+    ])
+
+    for item in result:
+        print(item)
 
     # TODO print the specific list and get the year of every reference
     uI = input("Please select a number from 0 -", len(allMatching) - 1, "to select an article.\nHit enter to leave\nE to exit")
@@ -138,38 +148,8 @@ def addArticle(collection):
     collection.update_many(
         {"abstract": ""},  # set to NULL
         {"venue": ""},  # set to NULL
-        {"reference": "$toArray"},  # set to empty array
+        {"reference": []},  # set to empty array
         {"n_citations": 0},  # set to 0
     )
-
-    # collection.update_many(
-    #     {"abstract":
-    #          {"$type": "str"}
-    #      },
-    #     {"$set":
-    #          {"abstract": {"": "$abstract"}}  # set to NULL
-    #      },
-    #
-    #     {"venue":
-    #          {"$type": "str"}
-    #      },
-    #     {"$set":
-    #          {"venue": {"": "$venue"}}  # set to NULL
-    #      },
-    #
-    #     {"reference":
-    #          {"$type": "str"}
-    #      },
-    #     {"$set":
-    #          {"reference": {"$toArray": "$reference"}}  # set to empty array
-    #      },
-    #
-    #     {"n_citations":
-    #          {"$type": "int"}
-    #      },
-    #     {"$set":
-    #          {"n_citations": {"$toInt": "$n_citations"}}  # set to 0
-    #      }
-    # )
 
     return

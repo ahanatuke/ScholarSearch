@@ -1,5 +1,3 @@
-from math import floor
-
 
 def searchArticles(collection):
     print("Please enter in a keyword to search for authors."

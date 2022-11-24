@@ -39,9 +39,9 @@ def init_db(jsonFile, portNum):
         {"year":
              {"$type": 16}
          },
-        {"$set":
+        [{"$set":
              {"year": {"$toString": "$year"} }
-         }
+         }]
     )
 
     collection.create_index(

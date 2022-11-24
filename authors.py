@@ -2,6 +2,11 @@ import venues
 import pymongo
 
 def searchAuthors(collection):
+
+
+
+
+
     # TODO Provide a keyword and see all authors whose names contain the keyword (the matches should be case-insensitive)
     print("Please enter in a keyword to search for authors."
           "\nHit ENTER to return back to the mainpage.")
@@ -37,23 +42,28 @@ def searchAuthors(collection):
         }
     ])
     results = list(results)
-    for item in results:
-        print(item)
 
-    print("Please select from 0 - ", len(results) - 1, "and select an author to look for.\nHit ENTER to leave\nE to exit")
+    if len(results) == 0:
+        print("No matches.")
+        return
+    i = 0
+    for item in results:
+        print(str(i) + ":", item)
+        i+=1
+
+    print("Please select from 0 -", len(results) - 1, "and select an author to look for.\nHit ENTER to leave\nE to exit")
 
 
     check = True
     while check:
+        uI = input("> ").lower().strip()
+        if uI == '':
+            return
+        elif uI == 'e':
+            print("Exiting program...\nGoodbye.")
+            exit()
         try:
-            uI = input("> ")
             intuI = int(uI)
-            uI = uI.lower().strip()
-            if uI == '':
-                return
-            elif uI =='e':
-                print("Exiting program...\nGoodbye.")
-                exit()
             if intuI < 0:
                 raise Exception
             if intuI >= len(results):
@@ -64,7 +74,10 @@ def searchAuthors(collection):
 
     author = results[intuI]["_id"]
     # TODO The user should be able to select an author and see the title, year and venue of all articles by that author
+
+
     '''The result should be sorted based on year with more recent articles shown first '''
+
 
     #get all of stuff that matches the authors name, group by year, and sort by year descending
     #see if it works and find a way to display title, year and venue only
@@ -95,3 +108,4 @@ def searchAuthors(collection):
 
 
     return
+

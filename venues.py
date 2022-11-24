@@ -24,7 +24,19 @@ def listVenues(collection):
     group by venue;
     '''
     #https://stackoverflow.com/questions/24761266/select-group-by-count-and-distinct-count-in-same-mongodb-query/24770233#24770233
+    '''
     collection.aggregate([
+        {"$lookup": {"from": "dblp", "localField": "id", "foreignField": "references", "as": "r_articles"}},
+        {"$unwind": {"path": "$r_articles"}},
+        {"$group": {"_id": "$venue", "s_references": {"$addToSet": "$r_articles.id"}}},
+        {"$project": {"_id": 1, "n_references": {"$size": "$s_references"}}},
+        {"$sort": {"n_references": -1}},
+        {"$limit": intuI},
+        {"$merge": {"$into": }}
+    ])
+'''
+
+    '''collection.aggregate([
         {"$match":
             {"venue": {"$ne": "null"}}
          },
@@ -49,7 +61,7 @@ def listVenues(collection):
 
         {"$sort": "$._id.id"},
         {"$limit": intuI}
-    ])
+    ])'''
 
     # TODO For each venue, list the venue, the number of articles in that venue, and the number of articles that
     #  reference a paper in that venue

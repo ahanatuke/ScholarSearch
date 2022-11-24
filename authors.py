@@ -15,7 +15,7 @@ def searchAuthors(collection):
 
     # TODO For each author, list the author name and the number of publications
     #get all where some part of name matches with uI, group by the name and count publications
-    results = collection.aggregate([
+    results = collection.find_one([
         {
             "$match":
                 {"name": '/' + uI + '/'}

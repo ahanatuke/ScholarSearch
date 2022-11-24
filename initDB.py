@@ -51,7 +51,7 @@ def init_db(jsonFile, portNum):
             end = quarter + quarter
     '''
     # jsonFile = "./"+jsonFile #note program assumes .py files and file is in same directory, also ENTER EXTENSION
-    importCmd = "mongoimport --db 291db --collection dblp --file " + jsonFile
+    importCmd = "mongoimport --db 291db --collection dblp --type=json --file " + jsonFile
 
     os.system(importCmd)
     collection.create_index("year")

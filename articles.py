@@ -42,7 +42,7 @@ def searchArticles(collection):
         # TODO For each matching article, display the id, the title, the year and the venue fields
 
         # if mongoDB returns an entire column we an simply display the parts we want to show for now
-        if allMatching is None:
+        if allMatching[0] is None:
             print("No results found.")
         else:
             for i in range(len(allMatching)):
@@ -131,6 +131,7 @@ def addArticle(collection):
                   "abstract": abstract
                   }
     collection.insertOne(newArticle)
+
     # TODO The fields abstract and venue should be set to null, references should be set to an empty array and
     #  n_citations should be set to zero
 

@@ -19,25 +19,26 @@ def searchArticles(collection):
         # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
         # TODO fix this query
         # get one and add it into all matching
-        for i in range(len(uI)):
-            results = collection.aggregate([
-                {'$or': [
-                    {"title": uI[i]},
-                    {"authors": uI[i]},
-                    {"abstract": uI[i]},
-                    {"venue": uI[i]},
-                    {"year": uI[i]}
-                    ]
-                 },
-                {'$project':
-                     {
-                        "title": 1,
-                        "year": 1,
-                        "venue": 1
-                      }
-                 }
-            ])
-            allMatching.append(results)
+        #for i in range(len(uI)):
+        results = collection.aggregate([
+            {'$match' : {'$or':
+                [
+                {"title": {'$regex' : uI, '$options' : 'i'}},
+                {"authors": {'$regex' : uI, '$options' : 'i'}},
+                {"abstract": {'$regex' : uI, '$options' : 'i'}},
+                {"venue": {'$regex' : uI, '$options' : 'i'}},
+                {"year": {'$regex' : uI, '$options' : 'i'}} ]
+             }
+            },
+            {'$project':
+                 {
+                    "title": 1,
+                    "year": 1,
+                    "venue": 1
+                  }
+             }
+        ])
+        allMatching.append(results)
 
         # TODO For each matching article, display the id, the title, the year and the venue fields
 

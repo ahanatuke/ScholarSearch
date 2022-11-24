@@ -2,45 +2,53 @@ from math import floor
 
 
 def searchArticles(collection):
-    print("Please enter in keywords for articles using spaces only.\nHit enter to go back to the mainpage.")
-    uI = input("> ")
-    if uI == '':
-        return
-    uI = uI.lower().split()
-    allMatching = []
-    # mongoDB here
-    # TODO retrieve all articles that match all those keywords (AND semantics)
-    '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
-    be case-insensitive) '''
 
-    # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
+    match = False
+    while not match:
+        print("Please enter in keywords for articles using spaces only.\nHit enter to go back to the main page.")
+        uI = input("> ")
+        if uI == '':
+            return
+        uI = uI.lower().split()
+        allMatching = []
+        # mongoDB here
+        # TODO retrieve all articles that match all those keywords (AND semantics)
+        '''A keyword matches if it appears in any of title, authors, abstract, venue and year fields (the matches should 
+        be case-insensitive) '''
 
-    #get one and add it into all matching
-    for i in range(len(uI)):
-        results = collection.find_one([
-            {'$or': [
-                {"title": uI[i]},
-                {"authors": uI[i]},
-                {"abstract": uI[i]},
-                {"venue": uI[i]},
-                {"year": uI[i]}
-                ]
-             },
-            {'$project':
-                 {
-                    "title": 1,
-                    "year": 1,
-                    "venue": 1
-                  }
-             }
-        ])
-        allMatching.append(results)
+        # UNIONS: https://medium.com/idomongodb/mongodb-unions-cb102d6d37ea
 
-    # TODO For each matching article, display the id, the title, the year and the venue fields
+        # get one and add it into all matching
+        for i in range(len(uI)):
+            results = collection.find_one([
+                {'$or': [
+                    {"title": uI[i]},
+                    {"authors": uI[i]},
+                    {"abstract": uI[i]},
+                    {"venue": uI[i]},
+                    {"year": uI[i]}
+                    ]
+                 },
+                {'$project':
+                     {
+                        "title": 1,
+                        "year": 1,
+                        "venue": 1
+                      }
+                 }
+            ])
+            allMatching.append(results)
 
-    #if mongoDB returns an entire column we an simply display the parts we want to show for now
-    for i in range(len(allMatching)):
-        print(str(i) + ':', results[i][0], results[i][1], results[i][4], results[i][3])
+        # TODO For each matching article, display the id, the title, the year and the venue fields
+
+        # if mongoDB returns an entire column we an simply display the parts we want to show for now
+        if allMatching is None:
+            print("No results found.")
+        else:
+            for i in range(len(allMatching)):
+                print(str(i) + ':', results[i][0], results[i][1], results[i][4], results[i][3])
+            match = True
+
 
     # TODO Select an article to see all fields including the abstract and authors in addition to the fields shown before
 
@@ -79,7 +87,7 @@ def addArticle(collection):
     check = True
 
     while check:
-        idInput = input("Add an id\nHit ENTER to go back to the mainpage\n> ").lower().strip()
+        idInput = input("Add an id\nHit ENTER to go back to the main page\n> ").lower().strip()
         if idInput == '':
             return
 
